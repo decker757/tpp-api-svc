@@ -31,6 +31,12 @@
 const src = '../../../src/'
 
 const configImport = `${src}/lib/config`
+
+// Derived from the module itself rather than hand-written, so a rename in
+// config.js fails here. The property values still resolve to `any` because
+// config.js builds its exports through rc and parse-strings-in-object,
+// neither of which ships types.
+type ConfigModule = typeof import('../../../src/lib/config')
 // jest.mock() is hoisted above declarations, so it must take a string literal
 // (not the `configImport` const) — otherwise ts-jest's hoisting hits a TDZ
 // ReferenceError. requireActual below still uses configImport at runtime.
@@ -47,14 +53,14 @@ describe('Config tests', () => {
 
   it('should load successfully', async () => {
     // Setup
-    let Config: any = null
+    let Config: ConfigModule | null = null
     let isSuccess
     // set env var
     process.env.ES_ENDPOINT_SECURITY__JWS__JWS_SIGN = 'false'
 
     // Act
     try {
-      Config = jest.requireActual(configImport)
+      Config = jest.requireActual<ConfigModule>(configImport)
       isSuccess = true
     } catch (e) {
       isSuccess = false
@@ -67,7 +73,7 @@ describe('Config tests', () => {
 
   it('should parse ENV var ALS_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST as a string', async () => {
     // Setup
-    let Config: any = null
+    let Config: ConfigModule | null = null
     let isSuccess
     const validateList = ['1']
     // set env var
@@ -76,7 +82,7 @@ describe('Config tests', () => {
 
     // Act
     try {
-      Config = jest.requireActual(configImport)
+      Config = jest.requireActual<ConfigModule>(configImport)
       isSuccess = true
     } catch (e) {
       isSuccess = false
@@ -85,7 +91,7 @@ describe('Config tests', () => {
     // Assert
     expect(Config != null).toBe(true)
     expect(isSuccess).toBe(true)
-    expect(Config.PROTOCOL_VERSIONS.CONTENT.VALIDATELIST).toMatchObject(validateList)
-    expect(Config.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST).toMatchObject(validateList)
+    expect(Config!.PROTOCOL_VERSIONS.CONTENT.VALIDATELIST).toMatchObject(validateList)
+    expect(Config!.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST).toMatchObject(validateList)
   })
 })

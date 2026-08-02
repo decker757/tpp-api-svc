@@ -31,9 +31,12 @@
 'use strict'
 
 // @mojaloop/ml-testing-toolkit-shared-lib ships no type declarations, so it is
-// require()'d as an untyped value (same pattern as event-sdk in helper.ts).
-// TODO: restore a typed import once the package publishes its own types.
-const { OpenApiMockGenerator } = require('@mojaloop/ml-testing-toolkit-shared-lib');
+// require()'d (same pattern as event-sdk in helper.ts) and cast to the local
+// OpenApiMockGen interface declared below.
+// TODO: restore a plain typed import once the package publishes its own types.
+const { OpenApiMockGenerator } = require('@mojaloop/ml-testing-toolkit-shared-lib') as {
+  OpenApiMockGenerator: new () => OpenApiMockGen
+};
 import { type ProtocolVersions } from './types';
 
 /**
@@ -50,6 +53,20 @@ interface JsfRef {
 interface RequestOverride {
   headers?: JsfRef[] | null
   request?: JsfRef[] | null
+}
+
+/**
+ * The part of ml-testing-toolkit-shared-lib's OpenApiMockGenerator that these
+ * utils use. The package ships no type declarations, so this mirrors the five
+ * methods we call, taken from its implementation in
+ * node_modules/@mojaloop/ml-testing-toolkit-shared-lib/src/lib/openApiMockGenerator.js
+ */
+interface OpenApiMockGen {
+  load: (schemaPath: string) => Promise<void>
+  generateRequestHeaders: (path: string, httpMethod: string, jsfRefs?: JsfRef[]) => Promise<Record<string, string>>
+  generateRequestBody: (path: string, httpMethod: string, jsfRefs?: JsfRef[]) => Promise<Record<string, unknown>>
+  generateRequestQueryParams: (path: string, httpMethod: string, jsfRefs?: JsfRef[]) => Promise<Record<string, unknown>>
+  generateRequestPathParams: (path: string, httpMethod: string, jsfRefs?: JsfRef[]) => Promise<Record<string, unknown>>
 }
 
 /**
@@ -91,7 +108,7 @@ const mockSpan = () => {
   return new Span();
 }
 
-let openApiMockGenerator: any;
+let openApiMockGenerator: OpenApiMockGen | undefined;
 
 // Factory generator for OpenApiRequestGenerator singleton
 const init = async () => {
