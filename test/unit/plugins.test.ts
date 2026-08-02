@@ -28,11 +28,13 @@
  ******/
 'use strict'
 
+import type { SinonSandbox } from 'sinon'
+
 const Sinon = require('sinon')
 
 const { registerPlugins } = require('../../src/plugins')
 
-let sandbox
+let sandbox: SinonSandbox
 describe('plugins', () => {
   beforeAll(() => {
     sandbox = Sinon.createSandbox()

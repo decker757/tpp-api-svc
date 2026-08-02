@@ -30,7 +30,10 @@
 
 'use strict'
 
-import { OpenApiMockGenerator } from '@mojaloop/ml-testing-toolkit-shared-lib';
+// @mojaloop/ml-testing-toolkit-shared-lib ships no type declarations, so it is
+// require()'d as an untyped value (same pattern as event-sdk in helper.ts).
+// TODO: restore a typed import once the package publishes its own types.
+const { OpenApiMockGenerator } = require('@mojaloop/ml-testing-toolkit-shared-lib');
 import { type ProtocolVersions } from './types';
 
 /**
@@ -88,7 +91,7 @@ const mockSpan = () => {
   return new Span();
 }
 
-let openApiMockGenerator: OpenApiMockGenerator | undefined;
+let openApiMockGenerator: any;
 
 // Factory generator for OpenApiRequestGenerator singleton
 const init = async () => {

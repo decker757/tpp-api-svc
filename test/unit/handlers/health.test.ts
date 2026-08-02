@@ -29,12 +29,15 @@
 
 'use strict'
 
+import type { SinonSandbox } from 'sinon'
+import type { Server } from '@hapi/hapi'
+
 const Sinon = require('sinon')
 const getPort = require('get-port')
 const { initialize } = require('../../../src/server')
-let sandbox
+let sandbox: SinonSandbox
 
-let server
+let server: Server
 jest.mock('@mojaloop/central-services-metrics', () => ({
   setup: jest.fn(),
   plugin: {

@@ -35,6 +35,8 @@ jest.mock('@mojaloop/central-services-logger', () => {
   }
 })
 
+import type { SinonSandbox } from 'sinon'
+
 const Sinon = require('sinon')
 const Enum = require('@mojaloop/central-services-shared').Enum
 const Endpoint = require('@mojaloop/central-services-shared').Util.Endpoints
@@ -46,7 +48,7 @@ const TestHelper = require('../../util/helper')
 const MockSpan = require('../../util/mockgen').mockSpan
 const Config = require('../../../src/lib/config')
 
-let sandbox
+let sandbox: SinonSandbox
 let SpanMock = MockSpan()
 
 describe('TppAccounts', () => {

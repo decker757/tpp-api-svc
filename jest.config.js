@@ -22,9 +22,13 @@ module.exports = {
   testEnvironment: 'node',
   maxWorkers: process.env.CI ? 2 : '50%',
   workerIdleMemoryLimit: '512MB',
-  // Transform JS files with babel-jest so ESM packages can be transpiled
+  // .ts is compiled + type-checked by ts-jest (against tsconfig.json);
+  // .js still goes through babel-jest so the ESM node_modules below can be transpiled.
   transform: {
-    '^.+\\.[tj]s$': 'babel-jest'
+    // ignoreCodes 151002: ts-jest warns that module:nodeNext "prefers" isolatedModules,
+    // but we keep isolatedModules off so ts-jest type-checks the tests. Warning is noise.
+    '^.+\\.ts$': ['ts-jest', { diagnostics: { ignoreCodes: [151002] } }],
+    '^.+\\.js$': 'babel-jest'
   },
 
   // Do not ignore these node_modules packages — whitelist packages that ship ESM.

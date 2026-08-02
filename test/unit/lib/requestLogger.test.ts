@@ -27,12 +27,14 @@
  --------------
  ******/
 'use strict'
+
+import type { SinonSandbox } from 'sinon'
 const Sinon = require('sinon')
 const Logger = require('@mojaloop/central-services-logger')
 
 const { logResponse } = require('../../../src/lib/requestLogger')
 
-let sandbox
+let sandbox: SinonSandbox
 describe('requestLogger', () => {
   beforeAll(() => {
     sandbox = Sinon.createSandbox()

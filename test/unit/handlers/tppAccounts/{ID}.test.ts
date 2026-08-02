@@ -29,6 +29,8 @@
 
 'use strict'
 
+import type { SinonSandbox } from 'sinon'
+
 jest.mock('@mojaloop/central-services-logger', () => {
   return {
     info: jest.fn(), // suppress info output
@@ -45,7 +47,7 @@ const Helper = require('../../../util/helper')
 const Handler = require('../../../../src/domain/tppAccounts.js')
 const Config = require('../../../../src/lib/config.js')
 
-let sandbox
+let sandbox: SinonSandbox
 const server = new Hapi.Server()
 
 /**

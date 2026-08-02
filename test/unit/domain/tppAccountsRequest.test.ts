@@ -29,6 +29,8 @@
 
 'use strict'
 
+import type { SinonSandbox } from 'sinon'
+
 jest.mock('@mojaloop/central-services-logger', () => {
   return {
     info: jest.fn() // suppress info output
@@ -46,7 +48,7 @@ const TestHelper = require('../../util/helper')
 const MockSpan = require('../../util/mockgen').mockSpan
 const Config = require('../../../src/lib/config')
 
-let sandbox
+let sandbox: SinonSandbox
 let SpanMock = MockSpan()
 
 describe('tppAccountsRequest', () => {

@@ -31,7 +31,7 @@
     "test:coverage-check"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.src.json",
+    "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js api",
     "test": "npm run test:unit",
     "test:unit": "jest --testMatch '**/test/unit/**/*.test.{js,ts}'",
@@ -46,7 +46,7 @@
     "generate-docs": "npx jsdoc -c jsdoc.json",
     "standard": "npx standard",
     "standard:fix": "npx standard --fix",
-    "typecheck": "tsc -p tsconfig.src.json --noEmit && tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "run": "docker run -p 3003:3003 --rm --link db:mysql tpp-api-svc:local",
     "local:ttk": "docker compose up --build",
     "package-lock": "docker run --rm -it tpp-api-svc:local cat package-lock.json > package-lock.json",
@@ -125,8 +125,11 @@
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8.0.1",
     "@mojaloop/ml-testing-toolkit-shared-lib": "14.3.3",
     "@types/jest": "30.0.0",
+    "@types/node": "^26.1.1",
+    "@types/sinon": "^22.0.0",
     "audit-ci": "^7.1.0",
     "babel-jest": "^30.4.1",
     "get-port": "5.1.1",
@@ -140,9 +143,8 @@
     "sinon": "22.0.0",
     "standard": "17.1.2",
     "standard-version": "^9.5.0",
-    "@babel/preset-typescript": "^8.0.1",
-    "@types/node": "^26.1.1",
-    "typescript": "^7.0.2"
+    "ts-jest": "29.4.12",
+    "typescript": "5.4.5"
   },
   "nyc": {
     "temp-directory": "./.nyc_output",

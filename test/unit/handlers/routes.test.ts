@@ -44,7 +44,7 @@ describe('Routes', () => {
       await expect(routes.length > 0).toBe(true)
 
       // Act/Assert
-      routes.forEach(route => {
+      routes.forEach((route: { handler: (...args: unknown[]) => unknown }) => {
         mockHandleRequest.mockClear()
         // Act
         route.handler({}, {})

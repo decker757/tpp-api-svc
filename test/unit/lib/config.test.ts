@@ -31,7 +31,10 @@
 const src = '../../../src/'
 
 const configImport = `${src}/lib/config`
-jest.mock(configImport)
+// jest.mock() is hoisted above declarations, so it must take a string literal
+// (not the `configImport` const) — otherwise ts-jest's hoisting hits a TDZ
+// ReferenceError. requireActual below still uses configImport at runtime.
+jest.mock('../../../src/lib/config')
 
 describe('Config tests', () => {
   beforeEach(() => {
