@@ -31,8 +31,16 @@ module.exports = {
     '^.+\\.js$': 'babel-jest'
   },
 
+  // json-schema-faker v0.6 is ESM-only — its exports map defines no "require" condition.
+  // @mojaloop/ml-testing-toolkit-shared-lib lazy-loads it with import(), which babel-jest
+  // downlevels to require(), so point the CJS resolver straight at the ESM bundle and let
+  // the transformIgnorePatterns whitelist below transpile it.
+  moduleNameMapper: {
+    '^json-schema-faker$': '<rootDir>/node_modules/json-schema-faker/dist/index.js'
+  },
+
   // Do not ignore these node_modules packages — whitelist packages that ship ESM.
   transformIgnorePatterns: [
-    'node_modules/(?!(@faker-js/faker|@mojaloop/ml-testing-toolkit-shared-lib|json-schema-ref-parser|json-schema-faker|commander)/)'
+    'node_modules/(?!(@faker-js/faker|@mojaloop/ml-testing-toolkit-shared-lib|@apidevtools/json-schema-ref-parser|json-schema-ref-parser|json-schema-faker|commander|serialize-error|non-error)/)'
   ]
 }
