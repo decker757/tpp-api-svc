@@ -35,7 +35,7 @@ module.exports = {
   // @mojaloop/ml-testing-toolkit-shared-lib lazy-loads it with import(), which babel-jest
   // downlevels to require(), so point the CJS resolver straight at the ESM bundle and let
   // the transformIgnorePatterns whitelist below transpile it.
-//This is a hard-coded path; ensure this is not broken when json-schema-faker is upgraded
+  // NOTE: this is a hard-coded path — re-check it when json-schema-faker is upgraded.
   moduleNameMapper: {
     '^json-schema-faker$': '<rootDir>/node_modules/json-schema-faker/dist/index.js'
   },
